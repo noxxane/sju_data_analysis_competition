@@ -43,6 +43,6 @@ data = pd.DataFrame({
     "Modeled": modeled_values})
 
 dfl = pd.melt(data, ["Year"])
+print(dfl)
 
-sns.lineplot(dfl, x="Year", y="value", hue="variable")
-plt.show()
+dfl.to_csv("modeled_data.csv", index=False)
