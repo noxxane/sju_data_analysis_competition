@@ -63,29 +63,40 @@ def state_models():
     ry_dict_ohio = {}
 
     for ry in [3, 2, 1]:
-        ry_df_michigan = df.loc[(df["ry"] == ry) and (df["state"] == "MI")]
-        ry_sum_michigan = ry_df["prjtrx"].sum()
+        ry_df = df.loc[df["ry"] == ry]
+        ry_df_michigan = ry_df.loc[df["state"] == "MI"]
+        ry_sum_michigan = ry_df_michigan["prjtrx"].sum()
         real_values_michigan.append(ry_sum_michigan)
         ry_dict_michigan[ry] = ry_sum_michigan
 
-        ry_df_ohio = df.loc[(df["ry"] == ry) and (df["state"] == "OH")]
-        ry_sum_ohio = ry_df["prjtrx"].sum()
+        ry_df_ohio = ry_df.loc[df["state"] == "OH"]
+        ry_sum_ohio = ry_df_ohio["prjtrx"].sum()
         real_values_ohio.append(ry_sum_ohio)
         ry_dict_ohio[ry] = ry_sum_ohio
 
     year_dict_michigan = {
         1: ry_dict_michigan[3],
         2: ry_dict_michigan[2],
-        1: ry_dict_michigan[1],
+        3: ry_dict_michigan[1],
     }
+
     real_values_michigan = [
         year_dict_michigan[1],
         year_dict_michigan[2],
         year_dict_michigan[3],
     ]
 
-    year_dict_ohio = {1: ry_dict_ohio[3], 2: ry_dict_ohio[2], 1: ry_dict_ohio[1]}
-    real_values_ohio = [year_dict_ohio[1], year_dict_ohio[2], year_dict_ohio[3]]
+    year_dict_ohio = {
+        1: ry_dict_ohio[3],
+        2: ry_dict_ohio[2],
+        3: ry_dict_ohio[1],
+    }
+
+    real_values_ohio = [
+        year_dict_ohio[1],
+        year_dict_ohio[2],
+        year_dict_ohio[3],
+    ]
 
     x = [1, 2, 3]
     y_michigan = real_values_michigan
@@ -114,12 +125,16 @@ def state_models():
     data_michigan = pd.DataFrame(
         {
             "Year": [1, 2, 3, 4, 5],
-            "Real": real_values,
+            "Real": real_values_michigan,
             "Modeled": modeled_values_michigan,
         }
     )
     data_ohio = pd.DataFrame(
-        {"Year": [1, 2, 3, 4, 5], "Real": real_values, "Modeled": modeled_values_ohio}
+        {
+            "Year": [1, 2, 3, 4, 5],
+            "Real": real_values_ohio,
+            "Modeled": modeled_values_ohio,
+        }
     )
 
     dfl_michigan = pd.melt(data_michigan, ["Year"])
@@ -132,4 +147,5 @@ def state_models():
     dfl_ohio.to_csv("modeled_data_ohio.csv", index=False)
 
 
+overall_model()
 state_models()
