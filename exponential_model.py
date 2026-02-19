@@ -146,6 +146,19 @@ def state_models():
     dfl_michigan.to_csv("modeled_data_michigan.csv", index=False)
     dfl_ohio.to_csv("modeled_data_ohio.csv", index=False)
 
+def combine_state_data():
+    dfl_michigan = pd.read_csv("modeled_data_michigan.csv")
+    dfl_ohio = pd.read_csv("modeled_data_ohio.csv")
+
+    dfl_michigan.loc[:9,"State"] = "MI"
+    dfl_ohio.loc[:9,"State"] = "OH"
+
+    dfl_combined = pd.concat([dfl_michigan, dfl_ohio], ignore_index=True)
+
+    print(dfl_combined)
+    
+    dfl_combined.to_csv("modeled_state_data_combined.csv", index=False)
 
 overall_model()
 state_models()
+combine_state_data()
